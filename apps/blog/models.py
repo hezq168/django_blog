@@ -2,7 +2,6 @@ from django.db import models
 from ckeditor_uploader.fields import RichTextUploadingField
 from users.models import UserProfile
 import django.utils.timezone as timezone
-from django.utils.html import format_html
 
 
 # 博客分类
@@ -47,9 +46,6 @@ class Post(models.Model):
     def __str__(self):
         return '<Blog: %s>' % self.title
 
-    def content_html(self):
-        return format_html(self.content)
-
     class Meta:
         verbose_name = "博客文章"
         verbose_name_plural = "博客文章"
@@ -87,5 +83,3 @@ class Notice(models.Model):
         verbose_name = '网站公告'
         verbose_name_plural = "网站公告"
         ordering = ['-id']
-
-

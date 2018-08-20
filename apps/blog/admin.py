@@ -35,7 +35,7 @@ class CommentsAdmin(admin.ModelAdmin):
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     # listdisplay设置要显示在列表中的字段（id字段是Django模型的默认主键）
-    list_display = ('id', 'title', 'type', 'content_html', 'author', 'page_view', 'love', 'created_time')
+    list_display = ('id', 'title', 'type', 'content', 'author', 'page_view', 'love', 'created_time')
     # 字段会被链接到mode的change页面
     list_display_links = ('id', 'title')
 
@@ -57,7 +57,7 @@ class PostAdmin(admin.ModelAdmin):
     # 字段为空值显示的内容
     # empty_value_display = '-空白-'
     # 过滤器功能及能过滤的字段
-    list_filter = ('created_time', 'type')
+    list_filter = ('content', 'type')
 
 
 @admin.register(Notice)
