@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+
+
+
+
+{% block title %}愽客文章{% endblock %}
+
+{% block content %}
+
+
+
+    {% load staticfiles %}
+    <!--内容-->
+    <div id="content">
+        <div class="container">
+            <div class="row">
+                <!--左边内容-->
+                <div class="col-md-9">
+                    <!--愽客文章-->
+                    {% for post in post %}
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h2 class="panel-title">
+                                    <ul class="breadcrumb" style="margin-bottom: 0px;padding: 8px 0px;">
+                                        <li>
+                                            <a href="{% url 'blog_index' %}"><i class="fa fa-home"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'blog_category' _id=post.type.id %}">{{ post.type }}</a>
+                                        </li>
+                                        <li class="active">{{ post.title }}</li>
+                                    </ul>
+                                </h2>
+                                <h2 style="margin-top: 5px;">{{ post.title }}</h2>
+
+                                <div class="preem hidden-sm hidden-xs">
+                                    <span><i class="fa fa-list-alt"></i><a href=""> {{ post.type }}</a></span>
+                                    <span><i class="fa fa-user"></i><a href=""> {{ post.author.first_name }}</a></span>
+                                    <span><i class="fa fa-clock-o"></i> {{ post.created_time }}</span>
+                                    <span><i class="fa fa-eye"></i> {{ post.page_view }}</span>
+                                    <span><i class="fa fa-comment-o"></i><a
+                                            href="{% url 'blog_post' id=post.id %}"> {{ post.comments_set.count }}评论</a></span>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <article class="article-content">
+                                    {{ post.content|safe }}
+                                </article>
+                                <div class="like_share">
+                                    <a href="#" class="btn btn-default">
+                                        <i class="fa fa-heart-o"></i>
+                                        喜欢
+                                        <span class="link-count">{{ post.love }}</span></a>
+                                </div>
+                                <hr/>
+
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h2 class="panel-title">
+                                            <span>评论列表</span>
+                                            <button class="btn btn-primary btn-sm pull-right comment"
+                                                    style="position: relative;top: -5px;" data-toggle="modal"
+                                                    data-target="#myModal">
+                                                <i class="fa fa-check-square-o"></i> 评论
+                                            </button>
+                                            {% for k,v in comment_form.errors.items %}{{ v }}{% endfor %}{{ msg }}
+                                        </h2>
+                                    </div>
+                                    {% for comm in post.comments_set.all %}
+                                        {#                               判断评论是否显示#}
+                                        {% if comm.is_show == 1 %}
+                                            <div class="panel-body">
+                                                <div class="pull-left pinglun-avatar">
+
+                                                    <p><img src="{% static 'images/20180306090519.jpg' %}" alt=""/></p>
+
+                                                    <p>{{ comm.blog_user.nick_name }}</p>
+
+                                                </div>
+                                                <div class="pinglun-body">
+                                                    <h3>{{ comm.author }}
+                                                        <span class="pull-right">{{ comm.created_time }}</span>
+                                                    </h3>
+
+                                                    <div class="pinglun-text">
+                                                        {{ comm.content|safe }}
+                                                    </div>
+                                                    {% if request.user.is_staff %}
+                                                        <div class="pinglun-bottom pull-right"><a href="">回复</a></div>
+                                                    {% endif %}
+                                                </div>
+
+                                            </div>
+                                            <hr style="margin:  5px 0;"/>
+                                        {% endif %}
+                                    {% empty %}
+                                        <div class="text-center">
+                                            <p>---暂无评论---</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <!--右边内容-->
+                {% include 'blog/right.html' %}
+            </div>
+        </div>
+    </div>
+    {#  添加评论模态状态#}
+    {% if request.user.is_authenticated %}
+        {% include 'blog/comment.html' %}
+    {% endif %}
+{% endblock %}
+
+{% block jscript %}
+    {% if request.user.is_authenticated %}
+        <script src="{% static 'lib/ckeditor/ckeditor/ckeditor.js' %}"></script>
+        <script type="text/javascript">
+            CKEDITOR.replace('description',
+                    {
+                        toolbar: [
+                            ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript'],
+                            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent'],
+                            ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+                            ['Styles', 'Format', 'Font', 'FontSize', 'TextColor', 'BGColor', 'CodeSnippet', 'Maximize', 'ShowBlocks', '-'],
+                        ]
+                    }
+            );
+        </script>
+
+
+
+
+        <script>
+
+            $('#comm').click(function () {
+                for (instance in CKEDITOR.instances) {
+                    CKEDITOR.instances[instance].updateElement();
+                }
+                if ($('#code').val().length != 0 && $('#description').val().length != 0) {
+                    $.ajax({
+                        url: '{% url 'blog_comment' %}',
+                        type: 'POST',
+                        data: $('#add').serialize(),
+                        dataType: 'JSON',
+                        success: function (rep) {
+                            console.log(rep);
+                            if (rep.status == 'ok') {
+                                alert(rep.data);
+                                location.reload();
+                            } else {
+                                alert(rep.error);
+                            }
+                        }
+                    })
+                } else {
+                    alert('验证码不能为空！');
+                }
+            });
+        </script>
+    {% endif %}
+    <script>
+        {% if request.user.is_authenticated %}
+        {% else %}
+            $('.comment').click(function () {
+                window.location.href = "/users/login?next={{ request.path }}";
+            })
+        {% endif %}
+
+    </script>
+
+{% endblock %}

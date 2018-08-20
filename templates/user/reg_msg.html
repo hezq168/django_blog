@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block header_extends %}
+{% endblock %}
+
+{% block nav %}
+{% endblock %}
+{% block notice %}
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-3">
+                <h1>用户注册激活</h1>
+                <p>感谢你({{ email }})的注册,请登录注册邮箱激活。</p>
+                <a href="{% url 'login' %}">登录</a>
+                <a href="{% url 'blog_index' %}">返回博客</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block jscript %}
+
+{% endblock %}

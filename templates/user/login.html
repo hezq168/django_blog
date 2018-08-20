@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block header_extends %}
+    <style>
+        .errors {
+            color: red;
+        }
+    </style>
+
+
+{% endblock %}
+
+{% block nav %}
+{% endblock %}
+{% block notice %}
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-3">
+                <h1>博客登录</h1>
+
+                <form action="{% url 'login' %}" method="post" class="form-horizontal">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ next }}">
+                    <div class="form-group">
+                        <label>邮箱：</label>
+                        {{ login.email }}
+                        <span class="errors">{{ login.errors.email }}</span>
+                    </div>
+                    <div class="form-group">
+                        <label>密码：</label>
+                        {{ login.pwd }}
+                        <span class="errors">{{ login.pwd.email }}</span>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                {{ login.code }}
+                            </div>
+                            <div class="col-md-6">
+                                <a href=""><img src="{% url 'check_code' %}" alt="code">换一张</a>
+                            </div>
+                            <span class="errors">{{ msg }}</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="登录" class="btn btn-primary">
+                        <a href="{% url 'register' %}" class="btn btn-primary ">注册</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block jscript %}
+
+{% endblock %}

@@ -1,0 +1,114 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title  %}{% endblock %}</title>
+{#  在键字描述#}
+{% block keywords %}
+    <meta name="keywords" content="Django,Python,Linux,Mysql,运维" />
+    <meta name="description" content="我的愽客，我的愽客，我的愽客，我的愽客" />
+{% endblock %}
+    <link rel="stylesheet" href="{% static 'lib/bootstrap3.3.7/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'lib/font-awesome/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+{#  预留css位子#}
+    {% block header_extends %}{% endblock %}
+</head>
+<body>
+{% load custom_tag %}
+{% post_notice as notice %}
+{#  头部#}
+{% block top %}
+    <div id="top">
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-sm-12">
+            <h1>个人愽客</h1>
+        </div>
+        <div class="pull-right about hidden-sm hidden-xs">
+            <ul class="list-inline">
+                <li><a href="" style="color: #ff7c49;"><i class="fa fa-rss fa-2x"></i></a></li>
+                <li><a href=""><i class="fa fa-qq fa-2x qq"></i></a></li>
+                <li><a href="" style="color: #2c3e50;"><i class="fa fa-github-square fa-2x github"></i></a></li>
+            </ul>
+       </div>
+    </div>
+</div>
+</div>
+{% endblock %}
+{# 导航条#}
+{% block nav %}
+    <nav id="nav" class="navbar navbar-default">
+    <div class="container">
+        <!-- 导航头部 -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li ><a href="#">首页 <span class="sr-only">(current)</span></a></li>
+                <li class="active"><a href="{% url 'blog_index' %}">愽客</a></li>
+                <li><a href="#">django</a></li>
+                <li><a href="#">python</a></li>
+                <li><a href="#">愽客</a></li>
+            </ul>
+{#            <ul class="nav navbar-nav navbar-right  hidden-sm hidden-xs">#}
+{#                <form class="navbar-form navbar-left">#}
+{#                    <div class="form-group">#}
+{#                        <input type="text" class="form-control" placeholder="Search">#}
+{#                    </div>#}
+{#                    <button type="submit" class="btn btn-default">搜索</button>#}
+{#                </form>#}
+{#            </ul>#}
+        </div>
+    </div>
+</nav>
+{% endblock %}
+{#  公告#}
+{% block notice %}
+<div id="notice">
+    <div class="container">
+        <div class="row">
+            <i class="fa fa-bullhorn"> <a href="">{{ notice.title }}</a></i>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{#  内容#}
+{% block content %}
+{% endblock %}
+{#  页脚 #}
+{% block footer %}
+<div id="footer">
+    <div class="container-fluid">
+        <div class="row">
+            <p class="footer_text">Copyright © 2018</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{#  加载js#}
+<script src="{% static 'lib/jquery3.3.1/jquery.min.js' %}"></script>
+<script src="{% static 'lib/bootstrap3.3.7/js/bootstrap.min.js' %}"></script>
+
+
+
+
+{#  代码高亮插件#}
+<script src="{% static 'lib/highlight/highlight.min.js' %}"></script>
+<link href="{% static 'lib/highlight/github-gist.min.css' %}" rel="stylesheet">
+<script >hljs.initHighlightingOnLoad();</script>
+
+{% block jscript %}{% endblock %}
+
+
+</body>
+</html>
