@@ -4,7 +4,7 @@ from django.utils.decorators import method_decorator
 
 from django.views import View
 
-from blog.models import Post, Tag, Comments, Type, Notice
+from blog.models import Post, Tag, Comments, Type, Notice, Stars, UserProfile
 from blog.forms import CommentsForm
 
 import json
@@ -23,12 +23,11 @@ def index(request):
 def post(request, id):
     if request.method == 'GET':
         # 获取文章内容
-        post = Post.objects.filter(id=id)
+        post = Post.objects.filter(id=id).first()
         comment_form = CommentsForm()
         # 添加阅读数
-        for p in post:
-            p.page_view += 1
-            p.save()
+        post.page_view += 1
+        post.save()
         context = {'post': post, 'comment_form': comment_form}
         return render(request, 'blog/post.html', context)
     elif request.method == 'POST':
@@ -47,7 +46,7 @@ def post(request, id):
             return HttpResponseRedirect('/blog/post/' + str(id))
         else:
             id = int(request.POST['id'])
-            post = Post.objects.filter(id=id)
+            post = Post.objects.filter(id=id).first()
             comment_form = CommentsForm()
 
             context = {'post': post, 'comment_form': comment_form}
@@ -69,7 +68,8 @@ class TagView(View):
     # 获取标签
     def get(self, request, _id):
         _post = Post.objects.filter(tag=_id)
-        return render(request, 'blog/tag.html', {'post': _post})
+        _tag = Tag.objects.filter(id=_id).first()
+        return render(request, 'blog/tag.html', {'post': _post, 'tag': _tag})
 
 
 class NoticeView(View):
@@ -104,4 +104,23 @@ class CommentView(View):
             msg['status'] = 'no'
             msg['error'] = '评论或验证码不能为空！'
 
+        return HttpResponse(json.dumps(msg))
+
+
+class StarsView(View):
+    """
+    关注
+    """
+    @method_decorator(login_required)
+    def post(self, request):
+        post_id = request.POST.get('post_id', None)
+        exiset_records = Stars.objects.filter(user=request.user, post=post_id)
+        if exiset_records:
+            # 如果记录已经存在，则表示用户取消关注
+            exiset_records.delete()
+            msg = {'status': 'ok', 'data': '关注取消！', 'error': ''}
+        else:
+            _post = Post.objects.get(id=post_id)
+            Stars.objects.create(post=_post, user=request.user)
+            msg = {'status': 'ok', 'data': '关注成功！', 'error': ''}
         return HttpResponse(json.dumps(msg))

@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
 
 
-{% block title  %}博客标签{% endblock %}
+{% block title %}{{ tag.name }}{% endblock %}
+
+{% block keywords %}
+    <meta name="keywords" content="{{ tag.keywords }}"/>
+    <meta name="description" content="{{ tag.description }}"/>
+{% endblock %}
 
 {% block content %}
 {% load staticfiles %}

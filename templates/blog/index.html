@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load custom_tag %}
 
 {% block title  %}我的博客{% endblock %}
 
@@ -35,7 +35,7 @@
                             <span><i class="fa fa-clock-o"></i> {{ post.created_time|date:"Y-m-d"}}</span>
                             <span><i class="fa fa-eye"></i> {{ post.page_view }}阅读</span>
                             <span><i class="fa fa-comment-o"></i><a href="{% url 'blog_post' id=post.id %}"> {{ post.comments_set.count }}评论</a></span>
-                            <span style="color: #f78585"><i class="fa fa-heart-o"></i> {{ post.love }}喜欢</span>
+                            <span style="color: #f78585"><i class="fa fa-heart-o"></i> {% stars_count post.id %}喜欢</span>
                             <span class="pull-right"><a href="{% url 'blog_post' id=post.id %}">阅读更多</a></span>
                         </div>
                     </div>

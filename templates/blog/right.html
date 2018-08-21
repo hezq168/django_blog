@@ -3,38 +3,38 @@
 {% post_type as type_list %}
 
 
-            <div class="col-md-3  hidden-sm hidden-xs">
-                <!--文章分类-->
-                <div class="panel panel-default subblock">
-                    <div class="panel-heading">
-                        <h3 class="panel-title "><i class="fa fa-align-justify"></i> 文章分类</h3>
-                    </div>
-                    <ul class="list-group">
-                        {% for type in type_list %}
-                            <li class="list-group-item">
+<div class="col-md-3  hidden-sm hidden-xs">
+    <!--文章分类-->
+    <div class="panel panel-default subblock">
+        <div class="panel-heading">
+            <h3 class="panel-title "><i class="fa fa-align-justify"></i> 文章分类</h3>
+        </div>
+        <ul class="list-group">
+            {% for type in type_list %}
+                <li class="list-group-item">
                                 <span class="badge">
-                                    {{type.post_set.count}}
+                                    {{ type.post_set.count }}
                                 </span>
-                                <a href="{% url 'blog_category' _id=type.id %}">{{ type.name }}</a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                <!--标签-->
-                <div class="panel panel-default subblock">
-                    <div class="panel-heading">
-                        <h3 class="panel-title "><i class="fa fa-align-justify"></i> 标签</h3>
-                    </div>
-                    <div class="panel-body">
-                        <ul class="tag_cloud">
-                            {% for tag in tag_list %}
-                                <a href="{% url 'blog_tag' _id=tag.id %}" title="{{ tag.post_set.count }}个话题" class="pull-left">
-                                    {{ tag.name }}&nbsp;&nbsp;&nbsp;({{ tag.post_set.count }})
-                                </a>
-                            {% empty %}
-                                暂无标签！
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>
-            </div>
+                    <a href="{% url 'blog_category' _id=type.id %}">{{ type.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <!--标签-->
+    <div class="panel panel-default subblock">
+        <div class="panel-heading">
+            <h3 class="panel-title "><i class="fa fa-align-justify"></i> 标签</h3>
+        </div>
+        <div class="panel-body">
+            <ul class="tag_cloud">
+                {% for tag in tag_list %}
+                    <a href="{% url 'blog_tag' _id=tag.id %}" title="{{ tag.post_set.count }}个话题" class="pull-left">
+                        {{ tag.name }}&nbsp;&nbsp;&nbsp;({{ tag.post_set.count }})
+                    </a>
+                {% empty %}
+                    暂无标签！
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>

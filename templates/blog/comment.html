@@ -1,34 +1,33 @@
-
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">评论内容:</h4>
-      </div>
-        <form action="#" method="post" id="add">
-            {% csrf_token %}
-            <input type="hidden" name="id" value="
-            {% for post in post %}
-                {{ post.id }}
-            {% endfor %}
-            ">
-          <div class="modal-body">
-              <div class="form-group">
-                <label for="comment" class="control-label"></label>
-                    <textarea name="description" id="description" class="form-control"/></textarea>
-              </div>
-          </div>
-          <div class="modal-footer">
-            <label>验证码：</label>
-               <img src="{% url 'check_code' %}" alt="code">
-              <input type="text" name="code" id="code">
-            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-            <button type="button"  id="comm" class="btn btn-primary">评论</button>
-              {% for k,v in comment_form.errors.items %}{{ v }}{% endfor %}{{ msg }}
-          </div>
-        </form>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">评论内容:</h4>
+            </div>
+            <form action="#" method="post" id="add">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{ post.id }}">
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="comment" class="control-label"></label>
+                        <textarea name="description" id="description" class="form-control"/></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <label>验证码：</label>
+                    <img src="{% url 'check_code' %}" alt="code">
+                    <input type="text" name="code" id="code">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" id="comm" class="btn btn-primary">评论</button>
+                    {% for k,v in comment_form.errors.items %}{{ v }}{% endfor %}{{ msg }}
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
 </div><!-- /.modal -->
 

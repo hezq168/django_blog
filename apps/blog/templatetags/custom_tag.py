@@ -7,7 +7,7 @@
 # @Project : mysite
 # @Software: PyCharm
 from django import template
-from blog.models import Tag, Notice, Type
+from blog.models import Tag, Notice, Type, Stars
 
 register = template.Library()
 
@@ -37,3 +37,12 @@ def post_type():
     :return:
     """
     return Type.objects.all()
+
+
+@register.simple_tag
+def stars_count(post_id):
+    """
+    关注数
+    :return:
+    """
+    return Stars.objects.filter(post=post_id).count()

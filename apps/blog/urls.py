@@ -22,6 +22,9 @@ urlpatterns = [
     path('tag/<int:_id>', blog_views.TagView.as_view(), name='blog_tag'),
     # 博客公告
     path('notice/<int:_id>', blog_views.NoticeView.as_view(), name='blog_notice'),
-    #
-    path('comment', blog_views.CommentView.as_view(), name='blog_comment')
+    # 博客评论
+    path('comment', blog_views.CommentView.as_view(), name='blog_comment'),
+    # 博客关注
+    path('stars', blog_views.StarsView.as_view(), name='blog_stars')
+
 ]

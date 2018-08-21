@@ -35,7 +35,7 @@ class CommentsAdmin(admin.ModelAdmin):
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     # listdisplay设置要显示在列表中的字段（id字段是Django模型的默认主键）
-    list_display = ('id', 'title', 'type', 'content', 'author', 'page_view', 'love', 'created_time')
+    list_display = ('id', 'title', 'type', 'content', 'author', 'page_view', 'created_time')
     # 字段会被链接到mode的change页面
     list_display_links = ('id', 'title')
 
